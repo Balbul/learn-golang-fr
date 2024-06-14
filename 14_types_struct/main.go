@@ -2,19 +2,8 @@ package main
 
 import "fmt"
 
-func updateA(number int) {
-	number = 5
-}
-
-func updateB(number *int) {
-	*number = 5
-}
-
 func main() {
-	number := 10
-	updateA(number) // ne modifie pas la valeur
-	fmt.Println(number)
-
-	updateB(&number) // modifie la valeur
-	fmt.Println(number)
+	myContact := newContact("B4LBU", 40, map[string]string{"Fixe": "10.11.12.13.14"})
+	fmt.Println(myContact)
+	fmt.Println(myContact.displayContact())
 }
