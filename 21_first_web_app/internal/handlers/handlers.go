@@ -8,14 +8,25 @@ import (
 	"path/filepath"
 
 	"github.com/Balbul/firstwebapp/config"
+	"github.com/Balbul/firstwebapp/models"
 )
 
 func Home(w http.ResponseWriter, r *http.Request) {
-	renderTemplate(w, "home")
+	names := make(map[string]string)
+	names["admin"] = "B4LBU"
+
+	renderTemplate(w, "home", &models.TemplateData{
+		StringData: names,
+	})
 }
 
 func Contact(w http.ResponseWriter, r *http.Request) {
-	renderTemplate(w, "contact")
+
+	ages := make(map[string]int)
+	ages["age"] = 28
+	renderTemplate(w, "contact", &models.TemplateData{
+		IntData: ages,
+	})
 }
 
 var appConfig *config.Config
@@ -24,7 +35,7 @@ func CreateTemplate(app *config.Config) {
 	appConfig = app
 }
 
-func renderTemplate(w http.ResponseWriter, tmplName string) {
+func renderTemplate(w http.ResponseWriter, tmplName string, td *models.TemplateData) {
 	templateCache := appConfig.TemplateCache
 
 	tmpl, ok := templateCache[tmplName+".page.tmpl"]
@@ -34,7 +45,7 @@ func renderTemplate(w http.ResponseWriter, tmplName string) {
 	}
 
 	buffer := new(bytes.Buffer)
-	tmpl.Execute(buffer, nil)
+	tmpl.Execute(buffer, td)
 	buffer.WriteTo(w)
 }
 
